@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>減脂追蹤</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-4">
+
+<div class="max-w-md mx-auto bg-white p-4 rounded-2xl shadow">
+  <h1 class="text-xl font-bold mb-4">減脂追蹤</h1>
+
+  <div id="streak" class="mb-4 font-semibold"></div>
+
+  <select id="daySelect" class="w-full p-2 border rounded mb-4"></select>
+
+  <input id="weight" placeholder="體重" class="input"/>
+  <input id="protein" placeholder="蛋白質" class="input"/>
+  <input id="water" placeholder="喝水量 ml" class="input"/>
+  <input id="workout" placeholder="運動" class="input"/>
+  <input id="score" placeholder="狀態 1-5" class="input"/>
+</div>
+
+<script>
+const TOTAL = 100;
+let data = JSON.parse(localStorage.getItem("fatloss")) || 
+  Array.from({length: TOTAL}, (_, i) => ({
+    day: i+1, weight:"", protein:"", water:"", workout:"", score:""
+  }));
+
+const daySelect = document.getElementById("daySelect");
+
+for(let i=1;i<=TOTAL;i++){
+  let opt = document.createElement("option");
+  opt.value = i;
+  opt.text = "Day " + i;
+  daySelect.appendChild(opt);
+}
+
+let currentDay = 1;
+
+function updateStreak(){
+  let count = 0;
+  for(let d of data){
+    if(d.weight || d.protein || d.water || d.workout) count++;
+    else break;
+  }
+  document.getElementById("streak").innerText = "已持續：" + count + " 天";
+}
+
+function load(){
+  const d = data[currentDay-1];
+  weight.value = d.weight;
+  protein.value = d.protein;
+  water.value = d.water;
+  workout.value = d.workout;
+  score.value = d.score;
+}
+
+function save(){
+  data[currentDay-1] = {
+    day: currentDay,
+    weight: weight.value,
+    protein: protein.value,
+    water: water.value,
+    workout: workout.value,
+    score: score.value
+  };
+  localStorage.setItem("fatloss", JSON.stringify(data));
+  updateStreak();
+}
+
+daySelect.onchange = (e)=>{
+  currentDay = Number(e.target.value);
+  load();
+};
+
+["weight","protein","water","workout","score"].forEach(id=>{
+  document.getElementById(id).oninput = save;
+});
+
+updateStreak();
+load();
+</script>
+
+<style>
+.input {
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border:1px solid #ddd;
+  border-radius:10px;
+}
+</style>
+
+</body>
+</html>
