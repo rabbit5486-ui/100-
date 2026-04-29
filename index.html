@@ -4,219 +4,430 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>100天減脂計畫</title>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#fafaf9;color:#1c1917;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px}
-.app{max-width:720px;margin:0 auto;padding:14px}
-.card{background:white;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-
-h1{font-size:24px;margin:0 0 6px}
-h2{font-size:18px;margin:0 0 6px}
-
-p{color:#57534e;margin:0;line-height:1.4}
-
+.app{max-width:760px;margin:0 auto;padding:14px}
+.card{background:white;border-radius:24px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.badge{display:inline-block;background:#f5f5f4;color:#57534e;border-radius:999px;padding:5px 10px;font-size:13px;margin-bottom:10px}
+h1{font-size:26px;margin:0 0 8px;line-height:1.2}
+h2{font-size:20px;margin:0 0 8px;line-height:1.25}
+p{color:#57534e;margin:0;line-height:1.45}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-.stat{background:white;border-radius:18px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.stat small{color:#78716c}
-.stat b{display:block;font-size:20px;margin-top:4px;white-space:nowrap}
-
-input,select,textarea{
-width:100%;
-border:0;
-border-radius:14px;
-background:white;
-padding:12px;
-font-size:14px;
-outline:none
-}
-
-.field{background:#f5f5f4;border-radius:16px;padding:10px;margin-bottom:8px}
-.field label{display:block;font-weight:700;color:#57534e;font-size:13px;margin-bottom:6px}
-
-button{
-border:0;
-border-radius:16px;
-padding:12px;
-font-weight:700;
-font-size:14px
-}
-
+.stat{background:white;border-radius:22px;padding:15px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.stat small{color:#78716c;font-size:13px}
+.stat b{display:block;font-size:22px;margin-top:4px;white-space:nowrap}
+input,select,textarea{width:100%;border:0;border-radius:16px;background:white;padding:13px;font-size:15px;outline:none}
+textarea{min-height:70px}
+.field{background:#f5f5f4;border-radius:20px;padding:12px;margin-bottom:10px}
+.field label{display:block;font-weight:700;color:#57534e;font-size:14px;margin-bottom:8px}
+button{border:0;border-radius:18px;padding:13px 14px;font-weight:700;font-size:15px;white-space:nowrap}
 .primary{background:#1c1917;color:white}
-.secondary{background:white;border:1px solid #ddd}
-
-.row{display:flex;gap:8px}
+.secondary{background:white;border:1px solid #ddd;color:#1473e6}
+.row{display:flex;gap:10px;align-items:center}
 .row>*{flex:1}
-
 .hidden{display:none!important}
+.week{background:#f5f5f4;border-radius:20px;padding:14px;margin-bottom:10px}
+.weekgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:14px;color:#44403c}
+.section-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.section-title select{max-width:130px}
+img{width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-top:10px}
+svg{width:100%;height:160px}
+small{color:#78716c}
 </style>
 </head>
 
 <body>
 <div class="app">
-
 <header class="card">
-<h1>100天減脂計畫</h1>
-<p>每日記錄體重、蛋白質、水量與運動；每週追蹤圍度與體態變化。</p>
+  <div class="badge">Daty 100 天減脂追蹤</div>
+  <h1>100天減脂計畫</h1>
+  <p>每日記錄體重、飲食、水量、運動與狀態；每週追蹤圍度、體態照與趨勢變化。</p>
 </header>
 
 <section class="grid2">
-<div class="stat"><small>已持續天數</small><b id="streak">0 天</b></div>
-<div class="stat"><small>目前體重</small><b id="latestWeight">—kg</b></div>
-<div class="stat"><small>平均水量</small><b id="avgWater">—ml</b></div>
-<div class="stat"><small>體態照</small><b id="photoCount">0 張</b></div>
+  <div class="stat"><small>已持續天數</small><b id="streak">0 天</b></div>
+  <div class="stat"><small>目前體重</small><b id="latestWeight">—kg</b></div>
+  <div class="stat"><small>平均水量</small><b id="avgWater">—ml</b></div>
+  <div class="stat"><small>體態照</small><b id="photoCount">0 張</b></div>
 </section>
 
 <section class="card">
-<label><b>開始日期</b></label>
-<input id="startDate" type="date" />
-
-<div class="row" style="margin-top:10px">
-<button class="primary" onclick="jumpToday()">跳到今天</button>
-<button class="secondary" id="modeBtn" onclick="toggleMode()">完整模式</button>
-</div>
+  <label><b>開始日期</b></label>
+  <input id="startDate" type="date" />
+  <div class="row" style="margin-top:12px">
+    <button class="primary" id="jumpTodayBtn">跳到今天</button>
+    <button class="secondary" id="modeBtn">完整模式</button>
+  </div>
 </section>
 
 <section class="card">
-<h2>每日紀錄</h2>
-
-<select id="daySelect"></select>
-
-<div class="field">
-<label>今日狀態</label>
-<select id="lifeStatus">
-<option value="">選擇狀態</option>
-<option>正常 Routine</option>
-<option>旅遊中</option>
-<option>月經期間</option>
-<option>聚餐日</option>
-<option>身體不適</option>
-<option>休息日</option>
-</select>
-</div>
-
-<div class="field"><label>體重 kg</label><input id="weight"></div>
-<div class="field"><label>蛋白質 g</label><input id="protein"></div>
-<div class="field"><label>喝水 ml</label><input id="water"></div>
-
-<div class="field">
-<label>運動</label>
-<select id="workout">
-<option value="">選擇</option>
-<option>上肢</option>
-<option>臀腿</option>
-<option>有氧</option>
-<option>休息</option>
-</select>
-</div>
-
-<div id="fullMode">
-<div class="field"><label>熱量 kcal</label><input id="calories"></div>
-<div class="field"><label>碳水 g</label><input id="carbs"></div>
-<div class="field"><label>脂肪 g</label><input id="fat"></div>
-<div class="field"><label>狀態 1-5</label><input id="score"></div>
-</div>
-
+  <h2>體重趨勢</h2>
+  <div id="weightChart">至少記錄 2 筆體重後，這裡會出現趨勢圖。</div>
 </section>
 
 <section class="card">
-<h2>每週圍度紀錄</h2>
-
-<select id="weekSelect"></select>
-
-<div class="field"><label>腰圍</label><input id="waist"></div>
-<div class="field"><label>臀圍</label><input id="hip"></div>
-<div class="field"><label>大腿</label><input id="thigh"></div>
-<div class="field"><label>手臂</label><input id="arm"></div>
-
+  <h2>身體圍度趨勢</h2>
+  <div id="measureChart">至少記錄 2 週圍度後，這裡會出現趨勢圖。</div>
 </section>
 
-<div class="row">
-<button class="primary" onclick="save()">儲存</button>
-<button class="secondary" onclick="resetAll()">清空</button>
+<section class="card">
+  <div class="section-title">
+    <div>
+      <h2 id="dayTitle">每日紀錄｜Day 1</h2>
+      <p id="daySub">未設定日期 · 尚未紀錄</p>
+    </div>
+    <select id="daySelect"></select>
+  </div>
+
+  <div class="field">
+    <label>今日狀態</label>
+    <select id="lifeStatus">
+      <option value="">選擇狀態</option>
+      <option>正常 Routine</option>
+      <option>旅遊中</option>
+      <option>月經期間</option>
+      <option>聚餐日</option>
+      <option>身體不適</option>
+      <option>休息日</option>
+    </select>
+  </div>
+
+  <div class="field"><label>空腹體重 kg</label><input id="weight" placeholder="例：66.2"></div>
+  <div class="field"><label>蛋白質 g</label><input id="protein" placeholder="基本 ≥100，漂亮 ≥120"></div>
+  <div class="field"><label>喝水量 ml</label><input id="water" placeholder="例：2000"></div>
+
+  <div class="grid2">
+    <div class="field">
+      <label>重訓</label>
+      <select id="strength">
+        <option value="">無</option>
+        <option>上肢</option>
+        <option>下肢</option>
+        <option>全身</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>有氧</label>
+      <select id="cardio">
+        <option value="">無</option>
+        <option>爬坡</option>
+        <option>跑步</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="inclineFields" class="grid2 hidden">
+    <div class="field"><label>爬坡坡度</label><input id="incline" placeholder="例：13"></div>
+    <div class="field"><label>爬坡速度</label><input id="speed" placeholder="例：3.5"></div>
+  </div>
+
+  <div class="field"><label>總運動時間 min</label><input id="exerciseMinutes" placeholder="例：75"></div>
+
+  <div id="fullMode">
+    <div class="field"><label>熱量 kcal</label><input id="calories" placeholder="目標 1400–1550"></div>
+    <div class="grid2">
+      <div class="field"><label>碳水 g</label><input id="carbs" placeholder="選填"></div>
+      <div class="field"><label>脂肪 g</label><input id="fat" placeholder="選填"></div>
+    </div>
+    <div class="field"><label>狀態分數 1–5</label><input id="score" placeholder="5=很穩，1=失控"></div>
+    <div class="field"><label>備註</label><textarea id="note" placeholder="月經、水腫、聚餐、拉肚子、睡不好都可以記"></textarea></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="section-title">
+    <div>
+      <h2>每週圍度紀錄</h2>
+      <p id="weekDate">未設定日期 · 早上空腹量</p>
+    </div>
+    <select id="weekSelect"></select>
+  </div>
+
+  <div class="grid2">
+    <div class="field"><label>腰圍 cm</label><input id="waist" placeholder="例：73"></div>
+    <div class="field"><label>臀圍 cm</label><input id="hip" placeholder="例：96"></div>
+    <div class="field"><label>大腿圍 cm</label><input id="thigh" placeholder="例：54"></div>
+    <div class="field"><label>手臂圍 cm</label><input id="arm" placeholder="例：27"></div>
+  </div>
+
+  <div class="field"><label>圍度備註</label><textarea id="measureNote" placeholder="月經前、水腫、剛練完腿都可以記"></textarea></div>
+
+  <div class="field">
+    <label>每週體態照</label>
+    <input type="file" accept="image/*" id="photoInput">
+    <div id="photoBox"></div>
+    <small>建議每週拍一次，不用每天拍。</small>
+  </div>
+</section>
+
+<div class="row" style="margin-bottom:14px">
+  <button class="primary" id="saveBtn">儲存</button>
+  <button class="secondary" id="resetBtn">清空</button>
 </div>
 
+<section class="card">
+  <h2>每週檢視</h2>
+  <div id="weekly"></div>
+</section>
 </div>
 
 <script>
-const TOTAL=100
-let simpleMode=true
+const STORAGE="daty-fatloss-final-v1";
+const TOTAL_DAYS=100;
+const TOTAL_WEEKS=Math.ceil(TOTAL_DAYS/7);
+let selectedDay=1;
+let selectedWeek=1;
 
-let data=JSON.parse(localStorage.getItem("fatloss")) ||
-Array.from({length:TOTAL},(_,i)=>({
-day:i+1,lifeStatus:"",weight:"",protein:"",water:"",workout:"",calories:"",carbs:"",fat:"",score:""
-}))
-
-let currentDay=1
-
-function save(){
-localStorage.setItem("fatloss",JSON.stringify(data))
-updateStreak()
+function localDate(d){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
 
-function resetAll(){
-if(!confirm("確定清空？"))return
-localStorage.removeItem("fatloss")
-location.reload()
+function makeRows(start=""){
+  let s=null;
+  if(start){
+    let [y,m,d]=start.split("-").map(Number);
+    s=new Date(y,m-1,d);
+  }
+  return Array.from({length:TOTAL_DAYS},(_,i)=>{
+    let date="";
+    if(s){
+      let d=new Date(s);
+      d.setDate(s.getDate()+i);
+      date=localDate(d);
+    }
+    return {
+      day:i+1,date,lifeStatus:"",
+      weight:"",protein:"",water:"",
+      strength:"",cardio:"",incline:"",speed:"",exerciseMinutes:"",
+      calories:"",carbs:"",fat:"",score:"",note:""
+    };
+  });
 }
 
-function update(field,value){
-data[currentDay-1][field]=value
-save()
+function makeMeasurements(start=""){
+  let s=null;
+  if(start){
+    let [y,m,d]=start.split("-").map(Number);
+    s=new Date(y,m-1,d);
+  }
+  return Array.from({length:TOTAL_WEEKS},(_,i)=>{
+    let date="";
+    if(s){
+      let d=new Date(s);
+      d.setDate(s.getDate()+i*7);
+      date=localDate(d);
+    }
+    return {week:i+1,date,waist:"",hip:"",thigh:"",arm:"",note:"",photo:""};
+  });
 }
 
-function updateStreak(){
-let count=0
-for(let d of data){
-if(d.weight||d.protein||d.water||d.workout) count++
-else break
-}
-document.getElementById("streak").innerText=count+" 天"
+let state=JSON.parse(localStorage.getItem(STORAGE)||"null") || {
+  startDate:"",
+  simpleMode:true,
+  rows:makeRows(""),
+  measurements:makeMeasurements("")
+};
+
+const $=id=>document.getElementById(id);
+function num(v){let n=Number(v);return v!==""&&Number.isFinite(n)?n:null}
+function avg(arr){let a=arr.map(num).filter(v=>v!==null);return a.length?a.reduce((x,y)=>x+y,0)/a.length:null}
+function min(arr){let a=arr.map(num).filter(v=>v!==null);return a.length?Math.min(...a):null}
+function fmt(v,d=1){return v==null||Number.isNaN(v)?"—":Number(v).toFixed(d)}
+
+for(let i=1;i<=TOTAL_DAYS;i++) $("daySelect").innerHTML+=`<option value="${i}">Day ${i}</option>`;
+for(let i=1;i<=TOTAL_WEEKS;i++) $("weekSelect").innerHTML+=`<option value="${i}">Week ${i}</option>`;
+
+function persist(){localStorage.setItem(STORAGE,JSON.stringify(state))}
+function save(){persist();render()}
+
+function updateDates(start){
+  state.startDate=start;
+  const newRows=makeRows(start);
+  const newM=makeMeasurements(start);
+  state.rows=newRows.map((r,i)=>({...r,...state.rows[i],day:r.day,date:r.date}));
+  state.measurements=newM.map((r,i)=>({...r,...state.measurements[i],week:r.week,date:r.date}));
+  save();
 }
 
-function toggleMode(){
-simpleMode=!simpleMode
-document.getElementById("fullMode").classList.toggle("hidden",simpleMode)
-document.getElementById("modeBtn").innerText=simpleMode?"完整模式":"簡單模式"
+function getTodayDay(){
+  if(!state.startDate) return 1;
+  let [y,m,d]=state.startDate.split("-").map(Number);
+  let start=new Date(y,m-1,d);
+  let t=new Date();
+  let today=new Date(t.getFullYear(),t.getMonth(),t.getDate());
+  let diff=Math.floor((today-start)/86400000)+1;
+  return Math.max(1,Math.min(TOTAL_DAYS,diff));
 }
 
 function jumpToday(){
-currentDay=1
-load()
+  selectedDay=getTodayDay();
+  selectedWeek=Math.ceil(selectedDay/7);
+  render();
 }
 
-function load(){
-let d=data[currentDay-1]
-weight.value=d.weight
-protein.value=d.protein
-water.value=d.water
-workout.value=d.workout
-lifeStatus.value=d.lifeStatus
-calories.value=d.calories
-carbs.value=d.carbs
-fat.value=d.fat
-score.value=d.score
+function toggleMode(){
+  state.simpleMode=!state.simpleMode;
+  save();
 }
 
-for(let i=1;i<=TOTAL;i++){
-let opt=document.createElement("option")
-opt.value=i
-opt.text="Day "+i
-daySelect.appendChild(opt)
+function resetAll(){
+  if(!confirm("確定要清空全部紀錄嗎？")) return;
+  localStorage.removeItem(STORAGE);
+  state={startDate:"",simpleMode:true,rows:makeRows(""),measurements:makeMeasurements("")};
+  selectedDay=1;selectedWeek=1;
+  render();
 }
 
-daySelect.onchange=(e)=>{
-currentDay=Number(e.target.value)
-load()
+function statusText(r){
+  let c=num(r.calories),p=num(r.protein),s=num(r.score);
+  if(!r.weight&&!p&&!c&&!r.water&&!r.strength&&!r.cardio) return "尚未紀錄";
+  if(c>=1400&&c<=1550&&p>=120&&(!s||s>=4)) return "漂亮穩住";
+  if((!c||c<=1700)&&p>=100) return "可接受";
+  if(p&&p<80) return "蛋白質偏低";
+  if(c&&c>1800) return "熱量偏高";
+  return "需要調整";
 }
 
-["weight","protein","water","workout","lifeStatus","calories","carbs","fat","score"].forEach(id=>{
-document.getElementById(id).oninput=(e)=>update(id,e.target.value)
-})
+function setDaily(){
+  let r=state.rows[selectedDay-1];
+  ["lifeStatus","weight","protein","water","strength","cardio","incline","speed","exerciseMinutes","calories","carbs","fat","score","note"].forEach(id=>r[id]=$(id).value);
+  persist();
+  renderStatsOnly();
+}
 
-updateStreak()
-load()
+function setMeasure(){
+  let m=state.measurements[selectedWeek-1];
+  ["waist","hip","thigh","arm"].forEach(id=>m[id]=$(id).value);
+  m.note=$("measureNote").value;
+  persist();
+  renderStatsOnly();
+}
+
+function renderStatsOnly(){
+  let streak=0;
+  for(let x of state.rows){
+    if(x.weight||x.protein||x.water||x.strength||x.cardio||x.calories||x.score) streak++;
+    else break;
+  }
+  $("streak").textContent=`${streak} 天`;
+  $("latestWeight").textContent=`${[...state.rows].reverse().find(x=>x.weight)?.weight||"—"}kg`;
+  $("avgWater").textContent=`${fmt(avg(state.rows.map(x=>x.water)),0)}ml`;
+  $("photoCount").textContent=`${state.measurements.filter(x=>x.photo).length} 張`;
+}
+
+function lineChart(target,data,label){
+  if(data.length<2){
+    $(target).innerHTML=`至少記錄 2 筆${label}後，這裡會出現趨勢圖。`;
+    return;
+  }
+  let vals=data.map(d=>d.value);
+  let mn=Math.min(...vals), mx=Math.max(...vals), range=mx-mn||1;
+  let pts=data.map((d,i)=>`${(i/(data.length-1))*100},${100-((d.value-mn)/range)*100}`).join(" ");
+  $(target).innerHTML=`
+    <div class="field">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="3"/>
+      </svg>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#78716c">
+        <span>最低：${fmt(mn)}</span>
+        <span>平均：${fmt(avg(vals))}</span>
+        <span>最高：${fmt(mx)}</span>
+      </div>
+    </div>`;
+}
+
+function renderCharts(){
+  let weights=state.rows.filter(r=>num(r.weight)!==null).map(r=>({label:r.day,value:Number(r.weight)}));
+  lineChart("weightChart",weights,"體重");
+
+  let waist=state.measurements.filter(r=>num(r.waist)!==null).map(r=>({label:r.week,value:Number(r.waist)}));
+  if(waist.length<2){
+    $("measureChart").innerHTML="至少記錄 2 週圍度後，這裡會出現腰圍趨勢圖。";
+  }else{
+    lineChart("measureChart",waist,"腰圍");
+  }
+}
+
+function renderWeekly(){
+  let html="";
+  for(let i=0;i<TOTAL_WEEKS;i++){
+    let list=state.rows.slice(i*7,i*7+7);
+    let m=state.measurements[i];
+    html+=`
+      <div class="week">
+        <b>Week ${i+1}｜${m.date||"未設定日期"}</b>
+        <div class="weekgrid">
+          <div>平均體重：${fmt(avg(list.map(x=>x.weight)))} kg</div>
+          <div>最低體重：${fmt(min(list.map(x=>x.weight)))} kg</div>
+          <div>平均熱量：${fmt(avg(list.map(x=>x.calories)),0)} kcal</div>
+          <div>平均蛋白：${fmt(avg(list.map(x=>x.protein)),0)} g</div>
+          <div>平均水量：${fmt(avg(list.map(x=>x.water)),0)} ml</div>
+          <div>運動時間：${fmt(avg(list.map(x=>x.exerciseMinutes)),0)} min</div>
+          <div>重訓：${list.filter(x=>x.strength).length} 次</div>
+          <div>有氧：${list.filter(x=>x.cardio).length} 次</div>
+          <div>腰圍：${m.waist||"—"} cm</div>
+          <div>臀圍：${m.hip||"—"} cm</div>
+          <div>大腿：${m.thigh||"—"} cm</div>
+          <div>手臂：${m.arm||"—"} cm</div>
+        </div>
+      </div>`;
+  }
+  $("weekly").innerHTML=html;
+}
+
+function render(){
+  $("startDate").value=state.startDate;
+  $("daySelect").value=selectedDay;
+  $("weekSelect").value=selectedWeek;
+
+  $("fullMode").classList.toggle("hidden",state.simpleMode);
+  $("modeBtn").textContent=state.simpleMode?"完整模式":"簡單模式";
+
+  let r=state.rows[selectedDay-1];
+  $("dayTitle").textContent=`每日紀錄｜Day ${selectedDay}`;
+  $("daySub").textContent=`${r.date||"未設定日期"} · ${statusText(r)}`;
+
+  ["lifeStatus","weight","protein","water","strength","cardio","incline","speed","exerciseMinutes","calories","carbs","fat","score","note"].forEach(id=>$(id).value=r[id]||"");
+  $("inclineFields").classList.toggle("hidden",$("cardio").value!=="爬坡");
+
+  let m=state.measurements[selectedWeek-1];
+  $("weekDate").textContent=`${m.date||"未設定日期"} · 早上空腹量`;
+  ["waist","hip","thigh","arm"].forEach(id=>$(id).value=m[id]||"");
+  $("measureNote").value=m.note||"";
+  $("photoBox").innerHTML=m.photo?`<img src="${m.photo}"><button class="secondary" id="deletePhotoBtn" style="margin-top:10px">刪除照片</button>`:"";
+  if($("deletePhotoBtn")) $("deletePhotoBtn").onclick=()=>{m.photo="";save()};
+
+  renderStatsOnly();
+  renderCharts();
+  renderWeekly();
+}
+
+$("startDate").onchange=e=>updateDates(e.target.value);
+$("jumpTodayBtn").onclick=jumpToday;
+$("modeBtn").onclick=toggleMode;
+$("saveBtn").onclick=save;
+$("resetBtn").onclick=resetAll;
+$("daySelect").onchange=e=>{selectedDay=Number(e.target.value);render()};
+$("weekSelect").onchange=e=>{selectedWeek=Number(e.target.value);render()};
+
+["lifeStatus","weight","protein","water","strength","cardio","incline","speed","exerciseMinutes","calories","carbs","fat","score","note"].forEach(id=>{
+  $(id).oninput=setDaily;
+  $(id).onchange=setDaily;
+});
+["waist","hip","thigh","arm","measureNote"].forEach(id=>{
+  $(id).oninput=setMeasure;
+});
+
+$("photoInput").onchange=e=>{
+  let file=e.target.files[0]; if(!file)return;
+  let reader=new FileReader();
+  reader.onload=()=>{state.measurements[selectedWeek-1].photo=reader.result;save()};
+  reader.readAsDataURL(file);
+};
+
+render();
 </script>
 </body>
 </html>
